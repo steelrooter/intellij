@@ -38,6 +38,7 @@ import com.android.tools.idea.run.util.ProcessHandlerLaunchStatus;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.idea.blaze.android.run.ApkDebugAttributeCheckingTask;
 import com.google.idea.blaze.android.run.LaunchStatusCompat;
 import com.google.idea.blaze.android.run.binary.UserIdHelper;
 import com.intellij.execution.ExecutionException;
@@ -111,6 +112,11 @@ public class BlazeAndroidLaunchTasksProvider implements LaunchTasksProvider {
 
     String packageName;
     try {
+      if (launchOptions.isDebug()) {
+        launchTasks.add(
+            new ApkDebugAttributeCheckingTask(runContext.getBuildStep().getDeployInfo()));
+      }
+
       packageName = applicationIdProvider.getPackageName();
       StringBuilder amStartOptions = new StringBuilder();
 
